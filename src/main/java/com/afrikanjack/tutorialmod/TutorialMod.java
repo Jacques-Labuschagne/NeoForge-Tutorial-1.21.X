@@ -1,5 +1,8 @@
 package com.afrikanjack.tutorialmod;
 
+import com.afrikanjack.tutorialmod.block.ModBlocks;
+import com.afrikanjack.tutorialmod.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -27,7 +30,10 @@ public class TutorialMod {
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public TutorialMod(IEventBus modEventBus, ModContainer modContainer) {
+    public TutorialMod(
+            IEventBus modEventBus,
+            ModContainer modContainer
+    ) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -36,20 +42,35 @@ public class TutorialMod {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        // Register the deferred registers for items and blocks so that they get loaded by FML
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(
+                ModConfig.Type.COMMON,
+                Config.SPEC
+        );
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
 
     }
 
-    // Add the example block item to the building blocks tab
+    // Add the items and blocks to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.BISMUTH);
+            event.accept(ModItems.RAW_BISMUTH);
+        }
 
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModBlocks.BISMUTH_BLOCK);
+            event.accept(ModBlocks.BISMUTH_ORE);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -59,7 +80,11 @@ public class TutorialMod {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = TutorialMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(
+            modid = TutorialMod.MOD_ID,
+            bus = EventBusSubscriber.Bus.MOD,
+            value = Dist.CLIENT
+    )
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
