@@ -1,6 +1,7 @@
 package com.afrikanjack.tutorialmod;
 
 import com.afrikanjack.tutorialmod.block.ModBlocks;
+import com.afrikanjack.tutorialmod.item.ModCreativeModeTabs;
 import com.afrikanjack.tutorialmod.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ public class TutorialMod {
         NeoForge.EVENT_BUS.register(this);
 
         // Register the deferred registers for items and blocks so that they get loaded by FML
+        ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
 
@@ -70,6 +72,7 @@ public class TutorialMod {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(ModBlocks.BISMUTH_BLOCK);
             event.accept(ModBlocks.BISMUTH_ORE);
+            event.accept(ModBlocks.BISMUTH_DEEPSLATE_ORE);
         }
     }
 

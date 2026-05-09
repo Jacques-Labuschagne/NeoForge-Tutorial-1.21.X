@@ -16,6 +16,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class ModBlocks {
+
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(
                     TutorialMod.MOD_ID
@@ -26,8 +27,8 @@ public class ModBlocks {
 
             "bismuth_block",
             () -> new Block(
-                    Block.Properties.of()
-                    .strength(4f)
+                    BlockBehaviour.Properties.of()
+                    .strength(1f,4f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
             )
@@ -40,9 +41,22 @@ public class ModBlocks {
             () -> new DropExperienceBlock(
                     UniformInt.of(2, 4),
                     BlockBehaviour.Properties.of()
-                            .strength(3f)
+                            .strength(2f, 4f)
                             .requiresCorrectToolForDrops()
                             .sound(SoundType.STONE)
+            )
+    );
+
+    public static final DeferredBlock<Block> BISMUTH_DEEPSLATE_ORE =
+            registerBlock(
+
+            "bismuth_deepslate_ore",
+            () -> new DropExperienceBlock(
+                    UniformInt.of(3, 6),
+                    BlockBehaviour.Properties.of()
+                            .strength(3f, 4f)
+                            .requiresCorrectToolForDrops()
+                            .sound(SoundType.DEEPSLATE)
             )
     );
 
